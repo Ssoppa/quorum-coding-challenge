@@ -3,7 +3,54 @@ import pandas as pd
 
 
 class BillVisualizator():
+  """
+  A simple class created to analyse the provided data and generate the requested deliverable.
+
+  Attributes
+  ----------
+      bills_path : str
+          filepath to bills csv file.
+      legislators_path : str
+          filepath to legislators csv file.
+      votes_path : str
+          filepath to votes csv file.
+      vote_results_path : str
+          filepath to vote_results csv file.
+      legistators_df : DataFrame
+          dataframe containing legislators data.
+      bills_df : DataFrame
+          dataframe containing bills data.
+      votes_df : DataFrame
+          dataframe containing votes data.
+      vote_results_df : DataFrame
+          dataframe containing vote_results data.
+          
+  Methods
+  -------
+      prepare_data():
+          Read all files and create a dataframe with all data.
+      get_first_deliverable(output_path="output.csv"):
+          For each legislator, get the number of supported and opposed bills.
+      get_second_deliverable(output_path="output.csv"):
+          For each bill, get the supporters and opposers legislators, as well as the name of the primary sponsor. 
+  """
+
   def __init__(self, bills_path: str = "", legislators_path: str = "", votes_path: str = "", vote_results_path: str = ""):
+    """
+    Constructs all the necessary attributes for the BillVisualizator object.
+
+    Parameters
+    ----------
+        bills_path : str, optional
+            filepath to bills csv file. (default is blank)
+        legislators_path : str, optional
+            filepath to legislators csv file. (default is blank)
+        votes_path : str, optional
+            filepath to votes csv file. (default is blank)
+        vote_results_path : str, optional
+            filepath to vote_results csv file. (default is blank)
+    """
+    
     # Set all variables
     self.bills_path = bills_path
     self.legislators_path = legislators_path
@@ -13,6 +60,14 @@ class BillVisualizator():
     self.prepare_data()
 
   def prepare_data(self):
+    """ 
+    Read all files and create a dataframe with all data. 
+    
+    Returns
+    -------
+    None
+    """
+
     print("Preparing data.")
 
     self.legistators_df = pd.read_csv(self.legislators_path)
@@ -23,6 +78,19 @@ class BillVisualizator():
     self.full_df = self.vote_results_df.join(self.legistators_df.set_index('id'), on='legislator_id').join(self.votes_df.set_index('id'), on='vote_id').join(self.bills_df.set_index('id'), on='bill_id')
 
   def get_first_deliverable(self, output_path: str = "output.csv"):
+    """ 
+    For each legislator, get the number of supported and opposed bills. 
+
+    Parameters
+    ----------
+        output_path : str, optional
+            filepath to output csv file. (default is output.csv)
+  
+    Returns
+    -------
+    None
+    """
+
     print("Generating first deliverable.")
     
     first_question_data = []
@@ -39,6 +107,19 @@ class BillVisualizator():
     print("First deliverable created.")
 
   def get_second_deliverable(self, output_path: str = "output.csv"):
+    """ 
+    For each bill, get the supporters and opposers legislators, as well as the name of the primary sponsor. 
+    
+    Parameters
+    ----------
+        output_path : str, optional
+            filepath to output csv file. (default is output.csv)
+
+    Returns
+    -------
+    None
+    """
+    
     print("Generating second deliverable.")
     
     second_question_data = []
@@ -88,7 +169,6 @@ if __name__ == "__main__":
     print("Invalid deliverable mode.")
 
 # TODO's:
-# - Add documentation
 # - Add logging
 # - Create a README.md file
 # - Add exception handling
