@@ -1,5 +1,16 @@
 import argparse
+import logging
 import pandas as pd
+
+# Create and configure logger
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+handler_error = logging.FileHandler('logging.log', encoding='utf-8')
+handler_error.setLevel(logging.DEBUG)
+formatter = logging.Formatter('Date: %(asctime)s \nLevel: %(levelname)s \nMessage: %(message)s\n',
+                                datefmt='%d-%m-%Y %H:%M:%S', )
+handler_error.setFormatter(formatter)
+LOGGER.addHandler(handler_error)
 
 
 class BillVisualizator():
@@ -34,7 +45,7 @@ class BillVisualizator():
       get_second_deliverable(output_path="output.csv"):
           For each bill, get the supporters and opposers legislators, as well as the name of the primary sponsor. 
   """
-
+  
   def __init__(self, bills_path: str = "", legislators_path: str = "", votes_path: str = "", vote_results_path: str = ""):
     """
     Constructs all the necessary attributes for the BillVisualizator object.
@@ -69,6 +80,7 @@ class BillVisualizator():
     """
 
     print("Preparing data.")
+    LOGGER.info('Preparing data.')
 
     self.legistators_df = pd.read_csv(self.legislators_path)
     self.bills_df = pd.read_csv(self.bills_path)
@@ -92,6 +104,7 @@ class BillVisualizator():
     """
 
     print("Generating first deliverable.")
+    LOGGER.info('Generating first deliverable.')
     
     first_question_data = []
     for legislator_id, legislator_name in self.legistators_df.values:
@@ -105,6 +118,7 @@ class BillVisualizator():
     first_question_df.set_index('id').to_csv(output_path)
 
     print("First deliverable created.")
+    LOGGER.info('First deliverable created.')
 
   def get_second_deliverable(self, output_path: str = "output.csv"):
     """ 
@@ -119,8 +133,9 @@ class BillVisualizator():
     -------
     None
     """
-    
+
     print("Generating second deliverable.")
+    LOGGER.info('Generating second deliverable.')
     
     second_question_data = []
     for bill_id, bill_title, bill_sponsor_id in self.bills_df.values:
@@ -137,11 +152,13 @@ class BillVisualizator():
     second_question_df.set_index('id').to_csv(output_path)
 
     print("Second deliverable created.")
+    LOGGER.info('Second deliverable created.')
 
 # Main function
 if __name__ == "__main__":
   try:
     print("Starting program.")
+    LOGGER.info('Starting program.')
     
     # Parse the arguments
     parser = argparse.ArgumentParser()
@@ -153,12 +170,15 @@ if __name__ == "__main__":
     parser.add_argument('--deliver_mode', action = 'store', dest = 'deliver_mode', default='1', required = False, help = 'Deliverable mode. 1 or 2, based on the provided questions.')
 
     print("Parsing arguments.")
+    LOGGER.info('Parsing arguments.')
     args = parser.parse_args()
   except Exception as e:
     print("Error parsing the arguments: " + str(e))
+    LOGGER.critical('Error parsing the arguments: ' + str(e))
     exit()
 
   print("Creating BillVisualizator object.")
+  LOGGER.info('Creating BillVisualizator object.')
   visualizator = BillVisualizator(args.bills_path, args.legislators_path, args.votes_path, args.vote_results_path)
   
   if args.deliver_mode == '1':
@@ -167,9 +187,10 @@ if __name__ == "__main__":
     visualizator.get_second_deliverable(args.output_path)
   else:
     print("Invalid deliverable mode.")
+    LOGGER.critical('Invalid deliverable mode.')
+
 
 # TODO's:
-# - Add logging
 # - Create a README.md file
 # - Add exception handling
 # - Create tests
