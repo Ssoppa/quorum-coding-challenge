@@ -1,0 +1,14 @@
+1. Discuss your solution’s time complexity. What tradeoffs did you make?
+  The first decision that I made was to use Pandas, based on my experience with this library and its flexibility. I probably could have approached this problem with loops, but I preferred to keep Pandas in the operations to make it easier to read. 
+  One particular tradeoff of my solution is related to the size of the given data because in this way everything is allocated in the cache, which is not feasible for big data (then I would probably use PySpark). 
+  Another tradeoff was using join to create one data frame containing all the data, which increased the allocated size of this solution but made it more straightforward to filter the data.
+
+2. How would you change your solution to account for future columns that might be
+requested, such as “Bill Voted On Date” or “Co-Sponsors”?
+  First, I would get the data from the dataframe, similar to what I did with name and title, then add this new data to the list to be appended, as well as in the creation of the new dataframe.
+
+3. How would you change your solution if instead of receiving CSVs of data, you were given a list of legislators or bills that you should generate a CSV for?
+  I would do something similar to what I did to generate a CSV with the deliverable: parse the list of values create a dataframe, then process based on this data, and continue normally.
+
+4. How long did you spend working on the assignment?
+  About 1.5 hours on the second deliverable (I started with this one), 15 minutes on the first one, and more than 25 minutes refactoring my solution and including documentation. In total, about 2 hours and 10 minutes.
