@@ -191,7 +191,6 @@ if __name__ == "__main__":
 
 
 # TODO's:
-# - Create a README.md file
 # - Add exception handling
 # - Create tests
 # - Check filepaths
