@@ -1,6 +1,6 @@
 # Quorum Coding Challenge
 
-Project created to work with legislative data.
+Project created to work with legislative data (link: https://github.com/Ssoppa/quorum-coding-challenge).
 
 ## Cloning this Repo?
 

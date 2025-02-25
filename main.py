@@ -191,6 +191,6 @@ if __name__ == "__main__":
 
 
 # TODO's:
+# - Check if the merge is correct (it is using left merge, but maybe I should start with legistators_df and not vote_results_df)
 # - Add exception handling
-# - Create tests
 # - Check filepaths
